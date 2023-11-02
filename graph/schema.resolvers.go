@@ -11,8 +11,6 @@ import (
 	"github.com/dinethpiyumantha/eventeo-gql-service/graph/model"
 )
 
-var db = database.Connect()
-
 // CreateEventListing is the resolver for the createEventListing field.
 func (r *mutationResolver) CreateEventListing(ctx context.Context, input model.CreateEventListingInput) (*model.EventListing, error) {
 	return db.CreateEventListing(input), nil
@@ -38,6 +36,11 @@ func (r *queryResolver) Event(ctx context.Context, id string) (*model.EventListi
 	return db.GetEvent(id), nil
 }
 
+// EventsPaginated is the resolver for the eventsPaginated field.
+func (r *queryResolver) EventsPaginated(ctx context.Context, page int, limit int) ([]*model.EventListing, error) {
+	return db.GetEventsPaginated(page, limit), nil
+}
+
 // Mutation returns MutationResolver implementation.
 func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
@@ -46,3 +49,11 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//   - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//     it when you're done.
+//   - You have helper methods in this file. Move them out to keep these resolver files clean.
+var db = database.Connect()

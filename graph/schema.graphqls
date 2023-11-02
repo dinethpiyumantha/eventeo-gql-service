@@ -9,6 +9,7 @@ type EventListing {
 type Query {
   events: [EventListing!]!
   event(id: ID!): EventListing!
+  eventsPaginated(page: Int!, limit: Int!): [EventListing!]!
 }
 
 type Mutation {

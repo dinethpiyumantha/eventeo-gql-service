@@ -134,3 +134,31 @@ func (db *DB) DeleteEventListing(eventId string) *model.DeleteEventResponse {
 	}
 	return &model.DeleteEventResponse{DeleteEventID: eventId}
 }
+
+func (db *DB) GetEventsPaginated(page int, limit int) []*model.EventListing {
+	eventCollec := db.client.Database("eventeo-db").Collection("events")
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	// Calculate the number of items to skip based on the page and limit
+	skip := (page - 1) * limit
+
+	// Set options for pagination
+	findOptions := options.Find()
+	findOptions.SetLimit(int64(limit))
+	findOptions.SetSkip(int64(skip))
+
+	// Execute the paginated query
+	cursor, err := eventCollec.Find(ctx, bson.D{}, findOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer cursor.Close(ctx)
+
+	var eventListings []*model.EventListing
+	if err = cursor.All(ctx, &eventListings); err != nil {
+		log.Fatal(err)
+	}
+
+	return eventListings
+}
