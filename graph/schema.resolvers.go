@@ -6,34 +6,36 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/dinethpiyumantha/eventeo-gql-service/database"
 	"github.com/dinethpiyumantha/eventeo-gql-service/graph/model"
 )
 
+var db = database.Connect()
+
 // CreateEventListing is the resolver for the createEventListing field.
 func (r *mutationResolver) CreateEventListing(ctx context.Context, input model.CreateEventListingInput) (*model.EventListing, error) {
-	panic(fmt.Errorf("not implemented: CreateEventListing - createEventListing"))
+	return db.CreateEventListing(input), nil
 }
 
 // UpdateEventListing is the resolver for the updateEventListing field.
 func (r *mutationResolver) UpdateEventListing(ctx context.Context, id string, input model.UpdateEventListingInput) (*model.EventListing, error) {
-	panic(fmt.Errorf("not implemented: UpdateEventListing - updateEventListing"))
+	return db.UpdateEventListing(id, input), nil
 }
 
 // DeleteEventListing is the resolver for the deleteEventListing field.
 func (r *mutationResolver) DeleteEventListing(ctx context.Context, id string) (*model.DeleteEventResponse, error) {
-	panic(fmt.Errorf("not implemented: DeleteEventListing - deleteEventListing"))
+	return db.DeleteEventListing(id), nil
 }
 
 // Events is the resolver for the events field.
 func (r *queryResolver) Events(ctx context.Context) ([]*model.EventListing, error) {
-	panic(fmt.Errorf("not implemented: Events - events"))
+	return db.GetEvents(), nil
 }
 
 // Event is the resolver for the event field.
 func (r *queryResolver) Event(ctx context.Context, id string) (*model.EventListing, error) {
-	panic(fmt.Errorf("not implemented: Event - event"))
+	return db.GetEvent(id), nil
 }
 
 // Mutation returns MutationResolver implementation.
