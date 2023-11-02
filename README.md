@@ -79,3 +79,16 @@ mutation DeleteQuery($id: ID!){
   "id": "654369d97c80cd8aebdf77a4"
 }
 ```
+
+###### Get All
+
+```
+query GetAllEvents {
+  events {
+    _id
+    title
+    description
+    organizer
+  }
+}
+```

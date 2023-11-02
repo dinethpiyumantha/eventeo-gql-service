@@ -8,11 +8,13 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/dinethpiyumantha/eventeo-gql-service/graph"
+	"github.com/dinethpiyumantha/eventeo-gql-service/utils"
 )
 
-const defaultPort = "8081"
+const defaultPort = "8080"
 
 func main() {
+	utils.LoadEnv()
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort

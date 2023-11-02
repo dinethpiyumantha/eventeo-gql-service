@@ -3,9 +3,11 @@ package database
 import (
 	"context"
 	"log"
+	"os"
 	"time"
 
 	"github.com/dinethpiyumantha/eventeo-gql-service/graph/model"
+	"github.com/dinethpiyumantha/eventeo-gql-service/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,14 +15,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-var connectionString string = "mongodb+srv://dinethpiyumantha:adminpasstTest@testingcluster.g2cxfdf.mongodb.net/eventeo-db?retryWrites=true&w=majority"
-
 type DB struct {
 	client *mongo.Client
 }
 
 func Connect() *DB {
-	client, err := mongo.NewClient(options.Client().ApplyURI(connectionString))
+	utils.LoadEnv()
+	conString := string(os.Getenv("DATABASE_URL"))
+	client, err := mongo.NewClient(options.Client().ApplyURI(conString))
 	if err != nil {
 		log.Fatal(err)
 	}
