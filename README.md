@@ -92,3 +92,16 @@ query GetAllEvents {
   }
 }
 ```
+
+###### Get with Pagination
+
+```
+query PaginatedEvents {
+  eventsPaginated(page: 1, limit: 3) {
+    _id
+    title
+    description
+    organizer
+  }
+}
+```
