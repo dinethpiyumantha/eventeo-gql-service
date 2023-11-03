@@ -919,9 +919,9 @@ func (ec *executionContext) _EventListing_organizer(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(string)
+	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNString2string(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋdinethpiyumanthaᚋeventeoᚑgqlᚑserviceᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_EventListing_organizer(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -931,7 +931,19 @@ func (ec *executionContext) fieldContext_EventListing_organizer(ctx context.Cont
 		IsMethod:   false,
 		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
-			return nil, errors.New("field of type String does not have child fields")
+			switch field.Name {
+			case "_id":
+				return ec.fieldContext_User__id(ctx, field)
+			case "name":
+				return ec.fieldContext_User_name(ctx, field)
+			case "email":
+				return ec.fieldContext_User_email(ctx, field)
+			case "password":
+				return ec.fieldContext_User_password(ctx, field)
+			case "role":
+				return ec.fieldContext_User_role(ctx, field)
+			}
+			return nil, fmt.Errorf("no field named %q was found under type User", field.Name)
 		},
 	}
 	return fc, nil
@@ -3809,7 +3821,7 @@ func (ec *executionContext) unmarshalInputCreateEventListingInput(ctx context.Co
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"title", "description", "organizer", "url"}
+	fieldsInOrder := [...]string{"title", "description", "organizerId", "url"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -3834,15 +3846,15 @@ func (ec *executionContext) unmarshalInputCreateEventListingInput(ctx context.Co
 				return it, err
 			}
 			it.Description = data
-		case "organizer":
+		case "organizerId":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("organizer"))
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("organizerId"))
 			data, err := ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Organizer = data
+			it.OrganizerID = data
 		case "url":
 			var err error
 

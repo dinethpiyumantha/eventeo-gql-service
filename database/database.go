@@ -77,14 +77,16 @@ func (db *DB) CreateEventListing(eventInfo model.CreateEventListingInput) *model
 	eventCollec := db.client.Database("eventeo-db").Collection("events")
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	inserg, err := eventCollec.InsertOne(ctx, bson.M{"title": eventInfo.Title, "description": eventInfo.Description, "url": eventInfo.URL, "organizer": eventInfo.Organizer})
+
+	user := db.GetUser(eventInfo.OrganizerID)
+	inserg, err := eventCollec.InsertOne(ctx, bson.M{"title": eventInfo.Title, "description": eventInfo.Description, "url": eventInfo.URL, "organizer": user})
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	insertedID := inserg.InsertedID.(primitive.ObjectID).Hex()
-	returnEventListing := model.EventListing{ID: insertedID, Title: eventInfo.Title, Organizer: eventInfo.Organizer, Description: eventInfo.Description, URL: eventInfo.URL}
+	returnEventListing := model.EventListing{ID: insertedID, Title: eventInfo.Title, Organizer: user, Description: eventInfo.Description, URL: eventInfo.URL}
 	return &returnEventListing
 }
 
@@ -192,4 +194,19 @@ func (db *DB) GetUsers() []*model.User {
 		panic(err)
 	}
 	return users
+}
+
+func (db *DB) GetUser(id string) *model.User {
+	userCollec := db.client.Database("eventeo-db").Collection("users")
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	_id, _ := primitive.ObjectIDFromHex(id)
+	filter := bson.M{"_id": _id}
+	var user model.User
+	err := userCollec.FindOne(ctx, filter).Decode(&user)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return &user
 }

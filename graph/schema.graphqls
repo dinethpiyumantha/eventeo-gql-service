@@ -2,7 +2,7 @@ type EventListing {
   _id: ID!
   title: String!
   description: String!
-  organizer: String!
+  organizer: User!
   url: String!
 }
 
@@ -34,7 +34,7 @@ type Mutation {
 input CreateEventListingInput {
   title: String!
   description: String!
-  organizer: String!
+  organizerId: String!
   url: String!
 }
 

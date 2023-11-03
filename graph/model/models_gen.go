@@ -5,7 +5,7 @@ package model
 type CreateEventListingInput struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Organizer   string `json:"organizer"`
+	OrganizerID string `json:"organizerId"`
 	URL         string `json:"url"`
 }
 
@@ -28,7 +28,7 @@ type EventListing struct {
 	ID          string `json:"_id" bson:"_id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Organizer   string `json:"organizer"`
+	Organizer   *User  `json:"organizer"`
 	URL         string `json:"url"`
 }
 
