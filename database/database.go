@@ -70,7 +70,6 @@ func (db *DB) GetEvents() []*model.EventListing {
 	if err = cursor.All(context.TODO(), &eventListings); err != nil {
 		panic(err)
 	}
-
 	return eventListings
 }
 

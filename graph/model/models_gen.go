@@ -14,7 +14,7 @@ type DeleteEventResponse struct {
 }
 
 type EventListing struct {
-	ID          string `json:"_id"`
+	ID          string `json:"_id" bson:"_id"` 
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Organizer   string `json:"organizer"`
