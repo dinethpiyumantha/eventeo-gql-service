@@ -9,12 +9,23 @@ type CreateEventListingInput struct {
 	URL         string `json:"url"`
 }
 
+type CreateUserInput struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
+}
+
 type DeleteEventResponse struct {
 	DeleteEventID string `json:"deleteEventId"`
 }
 
+type DeleteUserResponse struct {
+	DeleteUserID string `json:"deleteUserId"`
+}
+
 type EventListing struct {
-	ID          string `json:"_id" bson:"_id"` 
+	ID          string `json:"_id" bson:"_id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Organizer   string `json:"organizer"`
@@ -25,4 +36,19 @@ type UpdateEventListingInput struct {
 	Title       *string `json:"title,omitempty"`
 	Description *string `json:"description,omitempty"`
 	URL         *string `json:"url,omitempty"`
+}
+
+type UpdateUserInput struct {
+	Name     *string `json:"name,omitempty"`
+	Email    *string `json:"email,omitempty"`
+	Password *string `json:"password,omitempty"`
+	Role     *string `json:"role,omitempty"`
+}
+
+type User struct {
+	ID       string `json:"_id" bson:"_id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
 }

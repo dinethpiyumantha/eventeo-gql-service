@@ -161,3 +161,35 @@ func (db *DB) GetEventsPaginated(page int, limit int) []*model.EventListing {
 
 	return eventListings
 }
+
+// User
+func (db *DB) CreateUser(userInfo model.CreateUserInput) *model.User {
+	userCollec := db.client.Database("eventeo-db").Collection("users")
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	inserg, err := userCollec.InsertOne(ctx, bson.M{"name": userInfo.Name, "email": userInfo.Email, "password": userInfo.Password, "role": userInfo.Role})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	insertedID := inserg.InsertedID.(primitive.ObjectID).Hex()
+	returnUser := model.User{ID: insertedID, Name: userInfo.Name, Email: userInfo.Email, Password: userInfo.Password, Role: userInfo.Role}
+	return &returnUser
+}
+
+func (db *DB) GetUsers() []*model.User {
+	userCollec := db.client.Database("eventeo-db").Collection("users")
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	var users []*model.User
+	cursor, err := userCollec.Find(ctx, bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err = cursor.All(context.TODO(), &users); err != nil {
+		panic(err)
+	}
+	return users
+}

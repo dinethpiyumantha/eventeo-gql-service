@@ -6,16 +6,29 @@ type EventListing {
   url: String!
 }
 
+type User {
+  _id: ID!
+  name: String!
+  email: String!
+  password: String!
+  role: String!
+}
+
 type Query {
   events: [EventListing!]!
   event(id: ID!): EventListing!
   eventsPaginated(page: Int!, limit: Int!): [EventListing!]!
+  users: [User!]!
+  user(id: ID!): User!
 }
 
 type Mutation {
   createEventListing(input: CreateEventListingInput!): EventListing!
   updateEventListing(id: ID!, input: UpdateEventListingInput!): EventListing!
   deleteEventListing(id: ID!): DeleteEventResponse!
+  createUser(input: CreateUserInput!): User!
+  updateUser(id: ID!, input: UpdateUserInput!): User!
+  deleteUser(id: ID!): DeleteUserResponse!
 }
 
 input CreateEventListingInput {
@@ -33,4 +46,22 @@ input UpdateEventListingInput {
 
 type DeleteEventResponse {
   deleteEventId: String!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+  role: String!
+}
+
+input UpdateUserInput {
+  name: String
+  email: String
+  password: String
+  role: String
+}
+
+type DeleteUserResponse {
+  deleteUserId: String!
 }

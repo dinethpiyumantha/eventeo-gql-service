@@ -6,6 +6,7 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/dinethpiyumantha/eventeo-gql-service/database"
 	"github.com/dinethpiyumantha/eventeo-gql-service/graph/model"
@@ -26,6 +27,21 @@ func (r *mutationResolver) DeleteEventListing(ctx context.Context, id string) (*
 	return db.DeleteEventListing(id), nil
 }
 
+// CreateUser is the resolver for the createUser field.
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.CreateUserInput) (*model.User, error) {
+	return db.CreateUser(input), nil
+}
+
+// UpdateUser is the resolver for the updateUser field.
+func (r *mutationResolver) UpdateUser(ctx context.Context, id string, input model.UpdateUserInput) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: UpdateUser - updateUser"))
+}
+
+// DeleteUser is the resolver for the deleteUser field.
+func (r *mutationResolver) DeleteUser(ctx context.Context, id string) (*model.DeleteUserResponse, error) {
+	panic(fmt.Errorf("not implemented: DeleteUser - deleteUser"))
+}
+
 // Events is the resolver for the events field.
 func (r *queryResolver) Events(ctx context.Context) ([]*model.EventListing, error) {
 	return db.GetEvents(), nil
@@ -39,6 +55,16 @@ func (r *queryResolver) Event(ctx context.Context, id string) (*model.EventListi
 // EventsPaginated is the resolver for the eventsPaginated field.
 func (r *queryResolver) EventsPaginated(ctx context.Context, page int, limit int) ([]*model.EventListing, error) {
 	return db.GetEventsPaginated(page, limit), nil
+}
+
+// Users is the resolver for the users field.
+func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+	return db.GetUsers(), nil
+}
+
+// User is the resolver for the user field.
+func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
+	panic(fmt.Errorf("not implemented: User - user"))
 }
 
 // Mutation returns MutationResolver implementation.
